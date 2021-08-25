@@ -1,6 +1,9 @@
 from PIL import Image
 import numpy as np
 
+#ASCII convertation table
+ascii_table = np.array([' ', '.', '~', ':', '"', ';', '!', '+', 'i', 'l', 'I', '?', '*', 'O', '0', 'Q', 'q', 'w', 'm', 'W', 'M', '8', '&', '%', '$', '#', '@'])
+
 #Image path input
 image_path = "1.jpg"
 
@@ -8,28 +11,30 @@ image_path = "1.jpg"
 img = Image.open(image_path)
 
 #Image compression
-size_x = 80
-size_y = 300
-size = size_x, size_y
-img.thumbnail(size)
+new_width = 235
+width, height = img.size
+ratio = height / width / 2
+new_height = int(new_width * ratio)
+size = new_width, new_height
+img = img.resize(size)
 
 #Convertation to greyscale
 img = img.convert('L')
 
 #Convertation to array
-img_array = np.array(img)
+img_array = np.array(img) // 10
 
 #Convertation to ASCII
-for i in img_array:
-    for j in i:
-        j /= 10
-        j = int(round(j, 0))
-        img_array[i, j] = j
+ascii_array = ascii_table[img_array]
 
 #Final array output
-for i in img_array:
+text_file = open(image_path + "2ASCII.txt", "w")
+for i in ascii_array:
     for j in i:
-        print(j, " ", end='')
+        print(j, end='')
+        text_file.write(j)
+    text_file.write("\n")
     print()
+text_file.close()
 
 input()
