@@ -1,3 +1,7 @@
+#Ignore all
+*
 
+#Except
+!main.py
+1.jpg
 *.jpg
-*.txt
